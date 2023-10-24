@@ -2,19 +2,12 @@ import google.generativeai as palm
 from CONSTANTS import Api_key
 import pandas as pd
 
-# list of strings
-lst = ['Cat', 'Dog', 'Person', 'Mobile',
-       'Remote', 'Bottle', 'Orange']
 
-l2 = [1, 2, 4, 5, 6, 8, 7]
-s = {'objects': lst, "distance": l2}
+def remove_special_characters(input_string):
+    special_characters_pattern = r'[^a-zA-Z0-9.\s]'
+    cleaned_string = re.sub(special_characters_pattern, '', input_string)
+    return cleaned_string
 
-# Calling DataFrame constructor on list
-df = pd.DataFrame(data=s, index=[x for x in range(len(lst))])
-
-grouped_mean_df = df.groupby(['objects']).mean() / 12
-
-df_string = grouped_mean_df.to_string()
 
 
 
@@ -33,7 +26,9 @@ def createSceneFromEnv(data):
     prompt1 = f"""Give environment description for blind people using an object recognition software highlighting only the distances measured(in feet) from user for entities mentioned in the list - {data} """
 
     response = palm.generate_text(**defaults , prompt=prompt1)
+    response = remove_special_characters(response)
     return response.result
 
-if __name__ == "__main__":
-    print(createSceneFromEnv(df_string))
+
+    # for sentence in cleaned_res.split('\n'):
+    #      subprocess.run(['espeak', sentence])

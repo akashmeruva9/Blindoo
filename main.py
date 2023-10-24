@@ -268,5 +268,9 @@ grouped_mean_df = df.groupby(["objects"]).mean()/12
 print(grouped_mean_df)
 print('_' * 70)
 print("AI USER ENVIRONMENT DESC")
-print(bard.createSceneFromEnv(grouped_mean_df))
+scene_desc = bard.createSceneFromEnv(grouped_mean_df)
+print(scene_desc)
+
+for sentence in scene_desc.split('\n'):
+    speak(sentence)
 print('_' * 70)
